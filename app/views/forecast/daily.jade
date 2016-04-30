@@ -1,0 +1,62 @@
+.content.forecast
+    .row
+        .col-xs-12.col-sm-12.col-md-12.col-lg-12
+            .box
+                .overlay(ng-if="self.loading")
+                    i.fa.fa-refresh.fa-spin
+                .box-header.with-border
+                    .row
+                        .col-xs-12.col-sm-6.col-md-6.col-lg-6
+                            h3.box-title {{self.data.current.dt|moment:'dddd, DD [de] MMMM'}}
+                        .col-xs-12.col-sm-6.col-md-6.col-lg-6
+                            form.form-inline(name="formSearchCity", ng-submit="formSearchCity.$valid&&self.searchCity()", autocomplete="off")
+                                .input-group.search-input
+                                    label.sr-only Cidade
+                                    input.form-control.input-sm(type="text", name="city", ng-model="self.search", placeholder="Buscar por cidade...", ng-required="true", ng-minlength="3")
+                                    .help-block(ng-messages="formSearchCity.city.$dirty&&formSearchCity.city.$error")
+                                        span(ng-message="minlength") Informe pelo menos três letras
+                                    span.input-group-btn
+                                        button.btn.btn-default.btn-sm(type="submit", ng-disabled="formSearchCity.$invalid", ng-class="{disable:formSearchCity.$invalid}")
+                                            span.glyphicon.glyphicon-search.form-control-feedback(type="submit")
+                .box-body    
+                    .row.actual.text-center
+                        .col-xs-12
+                            .city {{self.data.current.name}}
+                            .temp {{self.data.current.main.temp}}°
+                            .desc.text-muted {{self.data.current.weather[0].description}}
+                            button.favorite.btn.btn-default.btn-xs(type="button", ng-click="self.favorite()", ng-if="!self.data.current.isFavorite")
+                                span.glyphicon.glyphicon-star
+                                |  Marcar cidade como favorita
+                            hr
+                    .row.week
+                        .col-xs-2.day.text-center(ng-repeat="day in self.data.forecast.list")
+                            .day-of-week
+                                .hidden-xs.hidden-sm {{day.dt|moment:'dddd'}}
+                                .hidden-md.hidden-lg {{day.dt|moment:'ddd'}}
+                            .icon
+                                img(ng-src="http://openweathermap.org/img/w/{{day.weather[0].icon}}.png")
+                            .max {{day.temp.max}}°
+                            .min.text-muted {{day.temp.min}}°
+    .row.extras
+        .col-xs-12.col-sm-12.col-md-4.col-lg-4
+            .box
+                .overlay(ng-if="self.loading")
+                    i.fa.fa-refresh.fa-spin
+                .box-header.with-border
+                .box-body
+                    .max Máxima de {{self.data.forecast.border.max.temp.max}}° ({{self.data.forecast.border.max.dt|moment:'dddd'}})
+                    .min.text-muted Mínima de {{self.data.forecast.border.min.temp.min}}° ({{self.data.forecast.border.min.dt|moment:'dddd'}})
+        .col-xs-12.col-sm-12.col-md-4.col-lg-4
+            .box(ng-class="{beach:self.data.goBeach}")
+                .overlay(ng-if="self.loading")
+                    i.fa.fa-refresh.fa-spin
+                .box-header.with-border
+                .box-body
+                    .beach(ng-if="self.data.goBeach") Partiu Praia?!
+        .col-xs-12.col-sm-12.col-md-4.col-lg-4
+            .box
+                .overlay(ng-if="self.loading")
+                    i.fa.fa-refresh.fa-spin
+                .box-header.with-border
+                .box-body
+                    canvas.chart.chart-line#variation(chart-data="self.variation.data", chart-labels="self.variation.labels", chart-legend="true", chart-series="self.variation.series")

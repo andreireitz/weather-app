@@ -1,0 +1,21 @@
+{
+  "name": "weather-app",
+  "description": "Weather App",
+  "version": "0.1.0",
+  "homepage": "https://github.com/angular/angular-seed",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.4.0",
+    "angular-route": "~1.4.0",
+    "angular-loader": "~1.4.0",
+    "angular-mocks": "~1.4.0",
+    "html5-boilerplate": "~5.2.0",
+    "angular-webstorage": "~0.14.0",
+    "moment": "~2.13.0",
+    "admin-template-lte": "*",
+    "angular-messages": "~1.5.5",
+    "Chart.js": "~2.0.2",
+    "angular-chart.js": "~0.10.2"
+  }
+}
